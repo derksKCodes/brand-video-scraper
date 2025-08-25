@@ -1,0 +1,37 @@
+# -------------------
+# Core Web Scraping
+# -------------------
+requests
+beautifulsoup4
+lxml
+selenium
+yt-dlp
+
+# -------------------
+# Video Processing
+# -------------------
+opencv-python
+ffmpeg-python
+imagehash
+pillow
+
+# -------------------
+# Data Handling
+# -------------------
+pandas
+numpy
+
+# -------------------
+# Google Drive Integration
+# -------------------
+pydrive2
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+
+# -------------------
+# Utilities
+# -------------------
+tqdm
+python-dotenv
