@@ -17,3 +17,6 @@ data/metadata_log.csv
 # Credentials
 credentials.json
 token.json
+
+
+config.py
