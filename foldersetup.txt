@@ -1,0 +1,253 @@
+# Create folders
+New-Item -ItemType Directory -Path scraper,processing,uploader,utils,data,videos -Force | Out-Null
+New-Item -ItemType Directory -Path scraper,processing,uploader,utils,data,videos -Force | Out-Null
+
+# Root files
+New-Item README.md,requirements.txt,config.py,run.py -ItemType File
+
+# Scraper files
+New-Item scraper\__init__.py,scraper\base_scraper.py,scraper\tiktok_scraper.py,scraper\youtube_scraper.py,scraper\instagram_scraper.py,scraper\twitter_scraper.py,scraper\facebook_scraper.py -ItemType File
+
+# Processing files
+New-Item processing\__init__.py,processing\watermark_removal.py,processing\video_deduplicator.py,processing\video_converter.py -ItemType File
+
+# Uploader files
+New-Item uploader\__init__.py,uploader\drive_uploader.py,uploader\metadata_logger.py -ItemType File
+
+# Utils files
+New-Item utils\__init__.py,utils\helpers.py,utils\validators.py -ItemType File
+
+# Data files
+New-Item data\input_urls.csv,data\metadata_log.csv -ItemType File
+
+
+Project idea:
+
+You are an expert Python automation developer specializing in web scraping, video processing, and cloud integration.
+Your task is to build a Python-based system that will scrape, filter, deduplicate, and upload videos related to a specific brand ("Ancient Bliss") to Google Drive.
+
+Project Scope & Deliverables
+
+Input
+
+Brand name: Ancient Bliss
+
+Target sources: TikTok, YouTube, Instagram, Twitter (X), Facebook, and other public video-sharing platforms.
+
+(Optional) Input CSV file containing seed URLs or profile links.
+
+Video Scraper Module
+
+Crawl multiple platforms for all videos related to the brand name.
+
+Extract video content, metadata (title, source URL, creator username, post date, tags).
+
+Download videos in highest available resolution.
+
+Remove or skip videos already scraped (use hashing to detect duplicates).
+
+Video Processing Module
+
+Detect duplicates by video hash/frame comparison (e.g., pHash or OpenCV).
+
+Remove watermarks using a watermark-removal library or ffmpeg filters.
+
+Ensure output videos are in MP4 (H.264, AAC) format with normalized resolution (e.g., 1080p).
+
+Filtering Module
+
+Keep only videos that are clearly related to Ancient Bliss.
+
+Discard unrelated content, reposts, or off-topic videos.
+
+Ensure strict filtering by checking captions, hashtags, audio, or brand mentions.
+
+Google Drive Uploader Module
+
+Upload all cleaned and deduplicated videos into a structured Google Drive folder.
+
+Folder structure:
+
+/AncientBlissVideos/PlatformName/
+
+Store a CSV/JSON log with video metadata (filename, source URL, upload timestamp).
+
+Output
+
+Google Drive folder containing only brand-related, clean, deduplicated videos.
+
+Metadata log file (CSV) with the following columns:
+video_id, platform, source_url, filename, upload_date, hashtags, dedup_status
+
+Technical Requirements
+
+Language: Python 3.12+
+
+Libraries:
+
+Scraping: playwright, selenium, beautifulsoup4, requests
+
+Video download: yt-dlp, pytube, API clients
+
+Video deduplication: opencv-python, imagehash, ffmpeg-python
+
+Google Drive: pydrive2 or google-api-python-client
+
+Format code with black and document with clear docstrings.
+
+Must handle pagination, infinite scroll, and platform rate limits (proxy rotation optional).
+
+Evaluation Criteria
+
+Coverage: ≥ 90% of brand-related videos found online.
+
+Deduplication: ≤ 1% duplicate rate in Google Drive.
+
+File Integrity: All uploaded videos play properly (no corruption).
+
+Metadata Accuracy: ≥ 95% correct entries in metadata log.
+
+a recommended project folder structure for your Video Scraping & Uploading system with suggested script names and responsibilities:
+
+📂 Project Structure
+video_scraper_project/
+│── README.md                   # Documentation about setup & usage
+│── requirements.txt             # Python dependencies
+│── config.py                    # API keys, Drive folder IDs, brand name, etc.
+│── run.py                       # Main entry point (orchestrates full pipeline)
+│
+├── scraper/
+│   │── __init__.py
+│   │── base_scraper.py          # Base class for scrapers (common utilities)
+│   │── tiktok_scraper.py        # Scraper for TikTok videos
+│   │── youtube_scraper.py       # Scraper for YouTube
+│   │── instagram_scraper.py     # Scraper for Instagram
+│   │── twitter_scraper.py       # Scraper for Twitter (X)
+│   │── facebook_scraper.py      # Scraper for Facebook
+│
+├── processing/
+│   │── __init__.py
+│   │── watermark_removal.py     # Removes watermarks (ffmpeg/OpenCV)
+│   │── video_deduplicator.py    # Detect & skip duplicate videos
+│   │── video_converter.py       # Normalize resolution & format (e.g., 1080p MP4)
+│
+├── uploader/
+│   │── __init__.py
+│   │── drive_uploader.py        # Uploads videos to Google Drive
+│   │── metadata_logger.py       # Saves metadata to CSV/JSON
+│
+├── utils/
+│   │── __init__.py
+│   │── helpers.py               # Helper functions (hashing, retries, logging)
+│   │── validators.py            # Filters & validates brand-related content
+│
+└── data/
+    │── input_urls.csv           # Optional: seed URLs/profiles
+    │── metadata_log.csv         # Stores scraped video metadata
+    │── videos/                  # Local downloaded video storage
+
+📌 Responsibilities of Each Script
+1. Scraper Layer (scraper/)
+
+Each platform scraper inherits from base_scraper.py.
+
+Responsibilities:
+
+Search videos by brand name (Ancient Bliss)
+
+Crawl through results & download metadata (title, URL, date, tags)
+
+Download raw videos with yt-dlp or APIs
+
+2. Processing Layer (processing/)
+
+watermark_removal.py → uses ffmpeg filters or OpenCV to crop/remove watermarks.
+
+video_deduplicator.py → compares videos using perceptual hash (imagehash, opencv).
+
+video_converter.py → converts all videos into MP4 (H.264, AAC) with consistent resolution.
+
+3. Uploader Layer (uploader/)
+
+drive_uploader.py → handles Google Drive authentication (pydrive2 or google-api-python-client).
+
+Uploads videos into structured folders:
+
+/AncientBlissVideos/TikTok/
+/AncientBlissVideos/YouTube/
+...
+
+
+metadata_logger.py → appends metadata to metadata_log.csv with columns:
+
+video_id, platform, source_url, filename, upload_date, hashtags, dedup_status
+
+4. Utils (utils/)
+
+helpers.py → general helpers (logging, retries, hashing).
+
+validators.py → checks if content is brand-related (keywords: "Ancient Bliss", hashtags, captions).
+
+5. Entry Point (run.py)
+
+Orchestrates the full pipeline:
+
+Run scrapers for all platforms
+
+Process videos (dedupe + watermark removal + format normalization)
+
+Upload videos to Google Drive
+
+Save metadata log
+
+a solid requirements.txt for your Video Scraping & Uploading Project:
+
+# -------------------
+# Core Web Scraping
+# -------------------
+requests
+beautifulsoup4
+lxml
+selenium
+yt-dlp
+
+# -------------------
+# Video Processing
+# -------------------
+opencv-python
+ffmpeg-python
+imagehash
+pillow
+
+# -------------------
+# Data Handling
+# -------------------
+pandas
+numpy
+
+# -------------------
+# Google Drive Integration
+# -------------------
+pydrive2
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+
+# -------------------
+# Utilities
+# -------------------
+tqdm
+python-dotenv
+
+📌 Notes:
+
+yt-dlp → best for downloading from TikTok, YouTube, Twitter, Instagram.
+
+ffmpeg-python + opencv-python → for watermark removal, deduplication, and format conversion.
+
+pydrive2 or google-api-python-client → for Google Drive upload automation.
+
+python-dotenv → keep API keys & config in a .env file.
+
+tqdm → progress bars for downloads & uploads.
