@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.env
+
+# Virtual env
+venv/
+.env/
+
+# Data
+data/videos/*
+data/metadata_log.csv
+
+# Credentials
+credentials.json
+token.json
